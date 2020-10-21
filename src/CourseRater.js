@@ -12,15 +12,13 @@ class CourseRater extends React.Component {
 
   setRating(e) {
     let rating = parseInt(e.target.value);  
-    console.log("course1", this.props.course);
     this.props.rateCourse(this.props.course, rating);
-    console.log("course2", this.props.course);
   }
 
  render() {
    console.log("returnProps", this.props);
     return (
-      <div className={'ml-3'}>
+      <div className={'d-block'}>
         <Form.Group controlId="formRating">
           <Form.Label>Rating</Form.Label>
             <Form.Control as="select" ref={this.props.course['rating'].toString()} onChange={this.setRating}>

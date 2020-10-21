@@ -46,7 +46,7 @@ class Course extends React.Component {
       }
     }
 
-    return <p className={'text-danger'}>Please meet the requisites.</p>
+    return <p className={'text-danger'}>Requisites not met</p>
   }
 
   render() {
@@ -105,12 +105,19 @@ class Course extends React.Component {
     let sections = [];
 
 
-    for (let i =0; i < this.props.data.sections.length; i++){
+    for (let i =0; i < this.props.data.sections.length; i++) {
       sections.push (
           <Card key={i}>
-            <Accordion.Toggle as={Card.Header} variant="link" eventKey={i} style={{height: 63, display: 'flex', alignItems: 'center'}}>
-              {"Section " + i}
-              {this.getSectionButton(i)}
+            <Accordion.Toggle as={Card.Header} variant="link" eventKey={i} style={{height: 63}}>
+              <div className={'d-flex flex-row'}>
+                <div className={'col-8'}>
+                  <p className={"text-center mb-0"}><strong>{"Section " + i}</strong></p>
+                  <p className={"text-center"}><small>{this.props.data.sections[i]['subsections'].length + " subsection(s) available"}</small></p>
+                </div>
+                <div className={'col-4'}>
+                  {this.getSectionButton(i)}
+                </div>
+              </div>
             </Accordion.Toggle>
             <Accordion.Collapse eventKey={i}>
               <Card.Body>
@@ -211,7 +218,7 @@ class Course extends React.Component {
     subsections.push (
         <Card key={i}>
           <Accordion.Toggle as={Card.Header} variant="link" eventKey={i} style={{height: 63, display: 'flex', alignItems: 'center'}}>
-            {i}
+            {"Subsection " + i}
             {this.getSubsectionButton(sectionKey, i)}
           </Accordion.Toggle>
           <Accordion.Collapse eventKey={i}>
@@ -250,6 +257,7 @@ class Course extends React.Component {
 
   openModal() {
     this.setState({showModal: true});
+    this.props.addToRecentlyViewedCourses(this.props.data);
   }
 
   closeModal() {

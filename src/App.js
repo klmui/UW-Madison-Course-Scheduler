@@ -4,6 +4,7 @@ import Sidebar from './Sidebar';
 import CourseArea from './CourseArea';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
+import Help from './Help';
 
 class App extends React.Component {
   constructor(props) {
@@ -15,14 +16,15 @@ class App extends React.Component {
       cartCourses: {},
       previouslyTakenCourses: [],
       recommendedCourses: [],
-      subject: "Any"
+      subject: "Any",
+      recentlyViewedCourses: []
     };
 
     this.rateCourse = this.rateCourse.bind(this);
     this.setSubject = this.setSubject.bind(this);
+    this.addToRecentlyViewedCourses = this.addToRecentlyViewedCourses.bind(this);
+    this.viewRecentlyViewedCourses = this.viewRecentlyViewedCourses.bind(this);
   }
-
-
 
   componentDidMount() {
    this.loadInitialState()
@@ -294,6 +296,29 @@ class App extends React.Component {
     return recommendedCourses;
   }
 
+  addToRecentlyViewedCourses(course) {
+    let newRecentlyViewedCourses = [];
+    newRecentlyViewedCourses.push(course);
+    for (let i = 0; i < this.state.recentlyViewedCourses.length; i++) {
+      if (!newRecentlyViewedCourses.includes(this.state.recentlyViewedCourses[i])) {
+        newRecentlyViewedCourses.push(this.state.recentlyViewedCourses[i]);
+      }
+    }
+    this.setState({ recentlyViewedCourses: newRecentlyViewedCourses });
+  }
+
+  viewRecentlyViewedCourses() {
+    let recentlyViewed = [];
+    for (let i = 0; i < this.state.recentlyViewedCourses.length; i++) {
+      if (i < 5) {
+        recentlyViewed.push(this.state.recentlyViewedCourses[i]);
+      } else {
+        break;
+      }
+    }
+    this.setState({filteredCourses: recentlyViewed});
+  }
+
   render() {
     console.log("courses", this.state.allCourses);
     return (
@@ -309,7 +334,7 @@ class App extends React.Component {
           <Tab eventKey="search" title="Search" style={{paddingTop: '5vh'}}>
             <Sidebar setCourses={(courses) => this.setCourses(courses)} courses={this.state.allCourses} subjects={this.state.subjects} setSubject={(subject) => this.setSubject(subject)}/>
             <div style={{marginLeft: '20vw'}}>
-              <CourseArea previouslyTakenCourses={this.state.previouslyTakenCourses} data={this.state.filteredCourses} addCartCourse={(data) => this.addCartCourse(data)} removeCartCourse={(data) => this.removeCartCourse(data)} cartCourses={this.state.cartCourses}/>
+              <CourseArea viewRecentlyViewedCourses={() => this.viewRecentlyViewedCourses()} recentlyViewedCourses={this.state.recentlyViewedCourses} addToRecentlyViewedCourses={(course) => this.addToRecentlyViewedCourses(course)} previouslyTakenCourses={this.state.previouslyTakenCourses} data={this.state.filteredCourses} addCartCourse={(data) => this.addCartCourse(data)} removeCartCourse={(data) => this.removeCartCourse(data)} cartCourses={this.state.cartCourses}/>
             </div>
           </Tab>
           <Tab eventKey="cart" title="Cart" style={{paddingTop: '5vh'}}>
@@ -325,6 +350,11 @@ class App extends React.Component {
           <Tab eventKey="recommendedCourses" title="Recommended Courses" style={{paddingTop: '5vh'}}>
             <div style={{marginLeft: '20vw'}}>
               <CourseArea previouslyTakenCourses={this.state.previouslyTakenCourses} data={this.state.recommendedCourses} recommendedCoursesMode={true} addCartCourse={(data) => this.addCartCourse(data)} removeCartCourse={(data) => this.removeCartCourse(data)} cartCourses={this.state.cartCourses}></CourseArea>
+            </div>
+          </Tab>
+          <Tab eventKey="Help" title="Help" style={{paddingTop: '5vh'}}>
+            <div style={{marginLeft: '20vw'}}>
+              <Help></Help>
             </div>
           </Tab>
         </Tabs>

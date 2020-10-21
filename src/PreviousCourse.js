@@ -27,13 +27,8 @@ class PreviousCourse extends React.Component {
           </Card.Title>
           <Card.Subtitle className="mb-2 text-muted">{this.props.data.number} - {this.getCredits()}</Card.Subtitle>
           {this.getDescription()}
-          <div className={'d-flex flex-row align-items-center'}>
-            <div className={'col-4'}>
-              <Button size='sm' variant='dark' onClick={() => this.openModal()}>View sections</Button>
-            </div>
-            <div className={'col-8'}>
-              <CourseRater course={this.props.data} rateCourse={this.props.rateCourse}></CourseRater>
-            </div>
+          <div className={'align-items-start'}>
+            <CourseRater course={this.props.data} rateCourse={this.props.rateCourse}></CourseRater>
           </div>
         </Card.Body>
         <Modal show={this.state.showModal} onHide={() => this.closeModal()} centered>
